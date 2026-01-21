@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metadata modelVersion="1.1.0">
-  <groupId>com.iesebre</groupId>
+  <groupId>com.iesebre.code</groupId>
   <artifactId>DirectAccessFile</artifactId>
   <versioning>
-    <lastUpdated>20260121183158</lastUpdated>
+    <lastUpdated>20260121184002</lastUpdated>
     <snapshot>
-      <timestamp>20260121.183158</timestamp>
+      <timestamp>20260121.184002</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
     <snapshotVersions>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>1.0-20260121.183158-1</value>
-        <updated>20260121183158</updated>
+        <value>1.0-20260121.184002-1</value>
+        <updated>20260121184002</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>1.0-20260121.183158-1</value>
-        <updated>20260121183158</updated>
+        <value>1.0-20260121.184002-1</value>
+        <updated>20260121184002</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

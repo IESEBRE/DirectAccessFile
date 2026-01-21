@@ -3,27 +3,27 @@
   <groupId>com.iesebre.code</groupId>
   <artifactId>DirectAccessFile</artifactId>
   <versioning>
-    <lastUpdated>20260121193407</lastUpdated>
+    <lastUpdated>20260121194147</lastUpdated>
     <snapshot>
-      <timestamp>20260121.193407</timestamp>
+      <timestamp>20260121.194147</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
     <snapshotVersions>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>1.0-20260121.193407-1</value>
-        <updated>20260121193407</updated>
+        <value>1.0-20260121.194147-1</value>
+        <updated>20260121194147</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>1.0-20260121.193407-1</value>
-        <updated>20260121193407</updated>
+        <value>1.0-20260121.194147-1</value>
+        <updated>20260121194147</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>javadoc</classifier>
         <extension>jar</extension>
-        <value>1.0-20260121.193407-1</value>
-        <updated>20260121193407</updated>
+        <value>1.0-20260121.194147-1</value>
+        <updated>20260121194147</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>

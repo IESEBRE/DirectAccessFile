@@ -27,7 +27,8 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and Publish locally
-        run: mvn clean deploy
+        run: mvn clean deploy | mvn javadoc:javadoc
+
 
       - name: Deploy to GitHub Pages branch
         uses: jamesives/github-pages-deploy-action@v4

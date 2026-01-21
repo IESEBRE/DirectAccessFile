@@ -27,7 +27,9 @@ jobs:
           distribution: 'temurin'
 
       - name: Build and Publish locally
-        run: mvn clean deploy | mvn javadoc:javadoc
+        run: |
+              mvn clean deploy 
+              mvn javadoc:javadoc
 
 
       - name: Deploy to GitHub Pages branch

@@ -26,11 +26,16 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build and Publish locally
+      - name: Build, Pack, Javadoc and Landing Page
         run: |
-              mvn clean deploy 
+              # 1. Generar binarios y estructura maven
+              mvn clean deploy
+        
+              # 2. Generar Javadoc
               mvn javadoc:javadoc
-
+        
+              # 3. Copiar nuestra plantilla como index.html principal
+              cp repo-index.html target/mvn-repo/index.html
 
       - name: Deploy to GitHub Pages branch
         uses: jamesives/github-pages-deploy-action@v4

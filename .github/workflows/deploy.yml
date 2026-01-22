@@ -28,7 +28,8 @@ jobs:
 
       - name: Build, Pack, Javadoc and Landing Page
         run: |
-              # 1. Generar binarios y estructura maven
+              # 1. Generar binarios y estructura maven. Al ejecutar deploy, Maven ahora incluirá los JARs de javadoc y 
+              # fuentes dentro de target/mvn-repo gracias a la configuración del POM
               mvn clean deploy
         
               # 2. Generar Javadoc

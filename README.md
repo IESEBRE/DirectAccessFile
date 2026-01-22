@@ -15,3 +15,5 @@ https://iesebre.github.io/DirectAccessFile/docs/
 I al landing page:
 
 https://iesebre.github.io/DirectAccessFile/
+
+[![Deploy Maven Repo to GitHub Pages](https://github.com/IESEBRE/DirectAccessFile/actions/workflows/deploy.yml/badge.svg?branch=main)](https://github.com/IESEBRE/DirectAccessFile/actions/workflows/deploy.yml)

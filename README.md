@@ -12,7 +12,7 @@ Se pot accedir al javadoc remotament a l'adreça:
 
 https://iesebre.github.io/DirectAccessFile/docs/
 
-I al landing page:
+I a la landing page:
 
 https://iesebre.github.io/DirectAccessFile/
 

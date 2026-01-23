@@ -3,35 +3,35 @@
   <groupId>com.iesebre.code</groupId>
   <artifactId>DirectAccessFile</artifactId>
   <versioning>
-    <lastUpdated>20260122184705</lastUpdated>
+    <lastUpdated>20260123095328</lastUpdated>
     <snapshot>
-      <timestamp>20260122.184705</timestamp>
+      <timestamp>20260123.095328</timestamp>
       <buildNumber>1</buildNumber>
     </snapshot>
     <snapshotVersions>
       <snapshotVersion>
         <extension>pom</extension>
-        <value>1.0-20260122.184705-1</value>
-        <updated>20260122184705</updated>
+        <value>1.0.1-20260123.095328-1</value>
+        <updated>20260123095328</updated>
       </snapshotVersion>
       <snapshotVersion>
         <extension>jar</extension>
-        <value>1.0-20260122.184705-1</value>
-        <updated>20260122184705</updated>
+        <value>1.0.1-20260123.095328-1</value>
+        <updated>20260123095328</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>javadoc</classifier>
         <extension>jar</extension>
-        <value>1.0-20260122.184705-1</value>
-        <updated>20260122184705</updated>
+        <value>1.0.1-20260123.095328-1</value>
+        <updated>20260123095328</updated>
       </snapshotVersion>
       <snapshotVersion>
         <classifier>sources</classifier>
         <extension>jar</extension>
-        <value>1.0-20260122.184705-1</value>
-        <updated>20260122184705</updated>
+        <value>1.0.1-20260123.095328-1</value>
+        <updated>20260123095328</updated>
       </snapshotVersion>
     </snapshotVersions>
   </versioning>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
 </metadata>

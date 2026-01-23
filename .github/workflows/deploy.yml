@@ -56,4 +56,4 @@ jobs:
       - name: Publish to GitHub Packages
         run: mvn clean deploy -DuniqueVersion=false -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::default::https://maven.pkg.github.com/iesebre/DirectAccessFile'
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN_PACKAGES }}

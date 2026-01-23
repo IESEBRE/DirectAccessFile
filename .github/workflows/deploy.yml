@@ -31,7 +31,7 @@ jobs:
           # 1. Genera artefactos, javadoc.jar y sources.jar en package y luego deploya a target/mvn-repo
           mvn -DskipTests=true clean package javadoc:jar source:jar
           
-          mvn -DskipTests=true deploy -DaltDeploymentRepository=local::default::file://$PWD/target/mvn-repo
+          #mvn -DskipTests=true deploy -DaltDeploymentRepository=local::default::file://$PWD/target/mvn-repo
           # 2. Generar Javadoc
           mvn -DskipTests=true javadoc:javadoc
           

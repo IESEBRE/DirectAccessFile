@@ -32,7 +32,8 @@ jobs:
           # Configura credenciales para el servidor 'github' en ~/.m2/settings.xml
           server-id: github
           server-username: ${{ github.actor }}
-          server-password: ${{ secrets.GITHUB_TOKEN }}
+          # Usar el PAT que has generado y guardado como secreto 'TOKEN_PACKAGES'
+          server-password: ${{ secrets.TOKEN_PACKAGES }}
 
       - name: Build, Pack, Javadoc and Landing Page
         run: |

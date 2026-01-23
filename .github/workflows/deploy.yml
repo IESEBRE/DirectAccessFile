@@ -47,7 +47,7 @@ jobs:
               # 3. Copiar nuestra plantilla como index.html principal
               cp repo-index.html target/mvn-repo/index.html
 
-      - name: Debug: comprobar credenciales y acceso a GitHub Packages
+      - name: Debug comprobar credenciales y acceso a GitHub Packages
         run: |
           echo "== ~/.m2/settings.xml (password masked) =="
           if [ -f ~/.m2/settings.xml ]; then

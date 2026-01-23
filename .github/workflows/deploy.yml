@@ -38,9 +38,14 @@ jobs:
               # 3. Copiar nuestra plantilla como index.html principal
               cp repo-index.html target/mvn-repo/index.html
 
-      - name: Deploy to GitHub Pages branch
-        uses: jamesives/github-pages-deploy-action@v4
-        with:
-          token: ${{ secrets.GH_TOKEN }}
-          branch: gh-pages # Rama donde se guardarán los binarios
-          folder: target/mvn-repo # Carpeta generada por el comando mvn deploy
+#      - name: Deploy to GitHub Pages branch
+#        uses: jamesives/github-pages-deploy-action@v4
+#        with:
+#          token: ${{ secrets.GH_TOKEN }}
+#          branch: gh-pages # Rama donde se guardarán los binarios
+#          folder: target/mvn-repo # Carpeta generada por el comando mvn deploy
+
+      - name: Publish to GitHub Packages
+        run: mvn clean source:jar javadoc:jar deploy -DuniqueVersion=false -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::default::https://maven.pkg.github.com/iesebre/DirectAccessFile'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

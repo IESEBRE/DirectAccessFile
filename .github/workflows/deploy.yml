@@ -46,6 +46,6 @@ jobs:
 #          folder: target/mvn-repo # Carpeta generada por el comando mvn deploy
 
       - name: Publish to GitHub Packages
-        run: mvn clean source:jar javadoc:jar deploy -DuniqueVersion=false -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::default::https://maven.pkg.github.com/iesebre/DirectAccessFile'
+        run: mvn clean deploy -DuniqueVersion=false -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::default::https://maven.pkg.github.com/iesebre/DirectAccessFile'
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

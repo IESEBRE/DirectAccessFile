@@ -32,7 +32,7 @@ jobs:
           mvn -DskipTests=true clean package deploy
           
           # 2. Generar Javadoc
-          mvn -DskipTests=true javadoc:javadoc
+          #mvn -DskipTests=true javadoc:javadoc
           
           # 3. Copiar nuestra plantilla como index.html principal
           cp repo-index.html target/mvn-repo/index.html

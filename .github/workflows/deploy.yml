@@ -47,12 +47,22 @@ jobs:
               # 3. Copiar nuestra plantilla como index.html principal
               cp repo-index.html target/mvn-repo/index.html
 
-#      - name: Deploy to GitHub Pages branch
-#        uses: jamesives/github-pages-deploy-action@v4
-#        with:
-#          token: ${{ secrets.GH_TOKEN }}
-#          branch: gh-pages # Rama donde se guardarán los binarios
-#          folder: target/mvn-repo # Carpeta generada por el comando mvn deploy
+      - name: Debug: comprobar credenciales y acceso a GitHub Packages
+        run: |
+          echo "== ~/.m2/settings.xml (password masked) =="
+          if [ -f ~/.m2/settings.xml ]; then
+            sed -E 's|<password>.*</password>|<password>***</password>|g' ~/.m2/settings.xml || true
+          else
+            echo "~/.m2/settings.xml does not exist"
+          fi
+
+          echo "== Comprobación HTTP al endpoint de Maven Packages =="
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.TOKEN_PACKAGES }}" https://maven.pkg.github.com/iesebre/DirectAccessFile)
+          echo "HTTP_STATUS=$STATUS"
+          if [ "$STATUS" = "401" ]; then
+            echo "AUTH ERROR: received 401 — token invalid/insufficient or not authorized for organization"
+            exit 1
+          fi
 
       - name: Publish to GitHub Packages
         run: mvn clean deploy -DuniqueVersion=false -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::default::https://maven.pkg.github.com/iesebre/DirectAccessFile'

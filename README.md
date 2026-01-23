@@ -5,7 +5,6 @@ Coses que he fet per publicar-ho aL GITHUB PAGES:
 3. Modificar el pom.xml
 4. Afegir el fitxer deploy.yml al .github/workflows/.
 
-
 Ara cada vegada que faig un push s'actualitza el repo del github i si he fet les accions del maven en local per refrescar 
 el javadoc, també apareix al github pages.
 

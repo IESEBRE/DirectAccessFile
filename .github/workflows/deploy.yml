@@ -13,6 +13,10 @@ on:
     branches:
       - main  # Se ejecuta cada vez que subes cambios a main
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -25,6 +29,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          # Configura credenciales para el servidor 'github' en ~/.m2/settings.xml
+          server-id: github
+          server-username: ${{ github.actor }}
+          server-password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build, Pack, Javadoc and Landing Page
         run: |
@@ -48,4 +56,4 @@ jobs:
       - name: Publish to GitHub Packages
         run: mvn clean deploy -DuniqueVersion=false -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::default::https://maven.pkg.github.com/iesebre/DirectAccessFile'
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_PACKAGES }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

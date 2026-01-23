@@ -42,7 +42,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.6.3</version>
+                <version>3.5.0</version>
                 <configuration>
                     <reportOutputDirectory>${project.build.directory}/mvn-repo</reportOutputDirectory>
                     <destDir>docs</destDir>
@@ -53,6 +53,7 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <phase>package</phase>
                     </execution>
                 </executions>
             </plugin>
@@ -67,6 +68,7 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+
                     </execution>
                 </executions>
             </plugin>

@@ -8,6 +8,8 @@ Coses que he fet per publicar-ho aL GITHUB PAGES:
 Ara cada vegada que faig un push s'actualitza el repo del github i si he fet les accions del maven en local per refrescar 
 el javadoc, també apareix al github pages.
 
+Des d'un projecte consumidor se pot utilitzar tant el codi com consultar el javadoc des del propi IntelliJ.
+
 Se pot accedir al javadoc remotament a l'adreça:
 
 https://iesebre.github.io/DirectAccessFile/docs/

@@ -29,10 +29,10 @@ jobs:
       - name: Build, Pack, Javadoc and Landing Page
         run: |
           # 1. Genera artefactos, javadoc.jar y sources.jar en package y luego deploya a target/mvn-repo
-          mvn -DskipTests=true clean package deploy
+          mvn -DskipTests=true clean package
           
           # 2. Generar Javadoc
-          #mvn -DskipTests=true javadoc:javadoc
+          mvn -DskipTests=true javadoc:javadoc
           
           # 3. Copiar nuestra plantilla como index.html principal
           cp repo-index.html target/mvn-repo/index.html

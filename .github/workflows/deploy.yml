@@ -37,14 +37,15 @@ jobs:
 
       - name: Build, Pack, Javadoc and Landing Page
         run: |
-              # 1. Generar binarios y estructura maven. Al ejecutar deploy, Maven ahora incluirá los JARs de javadoc y 
-              # fuentes dentro de target/mvn-repo gracias a la configuración del POM
-              mvn clean deploy
-        
+              # 1. Generar binarios (sin deploy) y empaquetado. Evitamos ejecutar `deploy` aquí para que el
+              # paso de Publish to GitHub Packages controle la publicación.
+              mvn -DskipTests clean package
+              
               # 2. Generar Javadoc
               mvn javadoc:javadoc
-        
-              # 3. Copiar nuestra plantilla como index.html principal
+              
+              # 3. Copiar nuestra plantilla como index.html principal dentro de target/mvn-repo
+              mkdir -p target/mvn-repo
               cp repo-index.html target/mvn-repo/index.html
 
       - name: Debug comprobar credenciales y acceso a GitHub Packages
@@ -84,7 +85,34 @@ jobs:
           TOKEN_PACKAGES: ${{ secrets.TOKEN_PACKAGES }}
           GITHUB_ACTOR: ${{ github.actor }}
 
+      - name: Optional debug attempt POM upload with curl (shows server JSON on error)
+        if: always()
+        run: |
+          # Determine project version and pom filename
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
+          POM_FILE="${ARTIFACT_ID}-${VERSION}.pom"
+          if [ ! -f target/$POM_FILE ]; then
+            echo "POM target/$POM_FILE not found — listing target/" 
+            ls -la target || true
+            exit 0
+          fi
+          BASE_URL="https://maven.pkg.github.com/iesebre/DirectAccessFile"
+          POM_PATH="com/iesebre/code/${ARTIFACT_ID}/${VERSION}/$POM_FILE"
+          echo "Uploading $POM_FILE to $BASE_URL/$POM_PATH"
+          HTTP=$(curl -s -o /tmp/curl_out -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.TOKEN_PACKAGES }}" -X PUT --data-binary @target/$POM_FILE "$BASE_URL/$POM_PATH")
+          echo "HTTP=$HTTP"
+          if [ "$HTTP" != "201" ] && [ "$HTTP" != "200" ]; then
+            echo "Server response body:"
+            cat /tmp/curl_out || true
+            echo "(end of server response)"
+          else
+            echo "POM uploaded successfully (HTTP=$HTTP)"
+          fi
+        env:
+          TOKEN_PACKAGES: ${{ secrets.TOKEN_PACKAGES }}
+
       - name: Publish to GitHub Packages
-        run: mvn -X -s ~/.m2/settings.xml clean deploy -DuniqueVersion=false -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::default::https://maven.pkg.github.com/iesebre/DirectAccessFile'
+        run: mvn -X -s ~/.m2/settings.xml clean deploy -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::https://maven.pkg.github.com/iesebre/DirectAccessFile'
         env:
           TOKEN_PACKAGES: ${{ secrets.TOKEN_PACKAGES }}

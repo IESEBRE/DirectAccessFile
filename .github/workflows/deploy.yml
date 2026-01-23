@@ -13,10 +13,6 @@ on:
     branches:
       - main  # Se ejecuta cada vez que subes cambios a main
 
-permissions:
-  contents: read
-  packages: write
-
 jobs:
   publish:
     runs-on: ubuntu-latest
@@ -29,90 +25,22 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          # Configura credenciales para el servidor 'github' en ~/.m2/settings.xml
-          server-id: github
-          server-username: ${{ github.actor }}
-          # Usar el PAT que has generado y guardado como secreto 'TOKEN_PACKAGES'
-          server-password: ${{ secrets.TOKEN_PACKAGES }}
 
       - name: Build, Pack, Javadoc and Landing Page
         run: |
-              # 1. Generar binarios (sin deploy) y empaquetado. Evitamos ejecutar `deploy` aquí para que el
-              # paso de Publish to GitHub Packages controle la publicación.
-              mvn -DskipTests clean package
-              
-              # 2. Generar Javadoc
-              mvn javadoc:javadoc
-              
-              # 3. Copiar nuestra plantilla como index.html principal dentro de target/mvn-repo
-              mkdir -p target/mvn-repo
-              cp repo-index.html target/mvn-repo/index.html
+          # 1. Generar binarios y estructura maven. Al ejecutar deploy, Maven ahora incluirá los JARs de javadoc y 
+          # fuentes dentro de target/mvn-repo gracias a la configuración del POM
+          mvn clean deploy
+          
+          # 2. Generar Javadoc
+          mvn javadoc:javadoc
+          
+          # 3. Copiar nuestra plantilla como index.html principal
+          cp repo-index.html target/mvn-repo/index.html
 
-      - name: Debug comprobar credenciales y acceso a GitHub Packages
-        run: |
-          echo "== ~/.m2/settings.xml (password masked) =="
-          if [ -f ~/.m2/settings.xml ]; then
-            sed -E 's|<password>.*</password>|<password>***</password>|g' ~/.m2/settings.xml || true
-          else
-            echo "~/.m2/settings.xml does not exist"
-          fi
-
-          echo "== Comprobación HTTP al endpoint de Maven Packages =="
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.TOKEN_PACKAGES }}" https://maven.pkg.github.com/iesebre/DirectAccessFile)
-          echo "HTTP_STATUS=$STATUS"
-          if [ "$STATUS" = "401" ]; then
-            echo "AUTH ERROR: received 401 — token invalid/insufficient or not authorized for organization"
-            exit 1
-          fi
-
-      - name: Configure Maven settings (explicit)
-        run: |
-          mkdir -p ~/.m2
-          cat > ~/.m2/settings.xml <<'SETTINGS'
-          <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-            xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 https://maven.apache.org/xsd/settings-1.0.0.xsd">
-            <servers>
-              <server>
-                <id>github</id>
-                <username>${GITHUB_ACTOR}</username>
-                <password>${TOKEN_PACKAGES}</password>
-              </server>
-            </servers>
-          </settings>
-          SETTINGS
-        env:
-          TOKEN_PACKAGES: ${{ secrets.TOKEN_PACKAGES }}
-          GITHUB_ACTOR: ${{ github.actor }}
-
-      - name: Optional debug attempt POM upload with curl (shows server JSON on error)
-        if: always()
-        run: |
-          # Determine project version and pom filename
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-          ARTIFACT_ID=$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)
-          POM_FILE="${ARTIFACT_ID}-${VERSION}.pom"
-          if [ ! -f target/$POM_FILE ]; then
-            echo "POM target/$POM_FILE not found — listing target/" 
-            ls -la target || true
-            exit 0
-          fi
-          BASE_URL="https://maven.pkg.github.com/iesebre/DirectAccessFile"
-          POM_PATH="com/iesebre/code/${ARTIFACT_ID}/${VERSION}/$POM_FILE"
-          echo "Uploading $POM_FILE to $BASE_URL/$POM_PATH"
-          HTTP=$(curl -s -o /tmp/curl_out -w "%{http_code}" -u "${{ github.actor }}:${{ secrets.TOKEN_PACKAGES }}" -X PUT --data-binary @target/$POM_FILE "$BASE_URL/$POM_PATH")
-          echo "HTTP=$HTTP"
-          if [ "$HTTP" != "201" ] && [ "$HTTP" != "200" ]; then
-            echo "Server response body:"
-            cat /tmp/curl_out || true
-            echo "(end of server response)"
-          else
-            echo "POM uploaded successfully (HTTP=$HTTP)"
-          fi
-        env:
-          TOKEN_PACKAGES: ${{ secrets.TOKEN_PACKAGES }}
-
-      - name: Publish to GitHub Packages
-        run: mvn -X -s ~/.m2/settings.xml clean deploy -Dmaven.source.useDefaultManifestFile=true -Dmaven.source.includePom=true -Dmaven.install.skip=true -DdeployAtEnd=true -DaltDeploymentRepository='github::https://maven.pkg.github.com/iesebre/DirectAccessFile'
-        env:
-          TOKEN_PACKAGES: ${{ secrets.TOKEN_PACKAGES }}
+      - name: Deploy to GitHub Pages branch
+        uses: jamesives/github-pages-deploy-action@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          branch: gh-pages # Rama donde se guardarán los binarios
+          folder: target/mvn-repo # Carpeta generada por el comando mvn deploy
